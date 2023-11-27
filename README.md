@@ -2,6 +2,17 @@
 
 Simple Contact CRUD menggunakan vite dan integrasi auth menggunakan firebase. untuk versi live silakan menuju ke link berikut [**live demo**](https://contact-list-app-gamma.vercel.app/)
 
+Beberapa fitur yang tersedia:
+- Login integrasi dengan Firebase
+- Register integrasi dengan Firebase
+- Login By Google Account integrasi dengan Firebase
+- List Contact
+- Edit Contact
+- Tambah Contact
+- Hapus Contact
+- Search Contact
+- Pagination
+
 ## Screenshot Tampilan
 
 ### Tampilan Authentikasi
