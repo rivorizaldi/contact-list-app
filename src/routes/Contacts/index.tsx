@@ -46,14 +46,16 @@ function Contacts() {
 
   const showModal = () => {
     setModalData({
-      ...modalData,
+      data: { name: "", contactNumber: "", id: "" },
+      type: "add",
       isOpen: true,
     });
   };
 
   const handleCancel = () => {
     setModalData({
-      ...modalData,
+      data: { name: "", contactNumber: "", id: "" },
+      type: "add",
       isOpen: false,
     });
   };
@@ -64,14 +66,18 @@ function Contacts() {
         setListContact([
           {
             name: data.name as string,
-            contactNumber: `$+62${data.contactNumber}`,
+            contactNumber:
+              data.contactNumber?.charAt(0) === "0"
+                ? `${data.contactNumber.replace(/^0/, "+62")}`
+                : `+62${data.contactNumber}`,
             id: faker.string.uuid(),
           },
           ...listContact,
         ]);
 
         setModalData({
-          ...modalData,
+          data: { name: "", contactNumber: "", id: "" },
+          type: "add",
           isOpen: false,
         });
         break;
@@ -89,7 +95,8 @@ function Contacts() {
         );
 
         setModalData({
-          ...modalData,
+          data: { name: "", contactNumber: "", id: "" },
+          type: "edit",
           isOpen: false,
         });
         break;
@@ -103,7 +110,7 @@ function Contacts() {
 
     setModalData({
       data: {
-        id: modalData.data.id,
+        id: data.id as string,
         name: data.name as string,
         contactNumber: removePlus,
       },
@@ -204,6 +211,7 @@ function Contacts() {
 
       {modalData.isOpen && (
         <Modal
+          type={modalData.type}
           isModalOpen={modalData.isOpen}
           handleCancel={handleCancel}
           onSubmit={onFinish}

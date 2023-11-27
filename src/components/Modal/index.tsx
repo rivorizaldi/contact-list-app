@@ -11,6 +11,7 @@ interface ModalProps {
   handleCancel: () => void;
   onSubmit: (data: FormData) => void;
   data: FormData;
+  type: string;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -18,12 +19,13 @@ const Modal: React.FC<ModalProps> = ({
   handleCancel,
   onSubmit,
   data,
+  type,
 }) => {
   const [form] = Form.useForm<FormData>();
 
   return (
     <AntdModal
-      title="Tambah Data"
+      title={type === "add" ? "Tambah Data" : "Edit Data"}
       open={isModalOpen}
       footer={null}
       onCancel={handleCancel}
@@ -33,7 +35,18 @@ const Modal: React.FC<ModalProps> = ({
         initialValues={data}
         form={form}
         layout="vertical"
-        onFinish={onSubmit}
+        onFinish={(values) => {
+          onSubmit(values);
+        }}
+        onValuesChange={(changed) => {
+          if (Object.getOwnPropertyDescriptor(changed, "contactNumber")) {
+            const formatNumber = changed.contactNumber
+              .toString()
+              .replaceAll(/\D/g, "");
+
+            form.setFieldValue("contactNumber", formatNumber);
+          }
+        }}
       >
         <Form.Item name="name" label="Nama" rules={[{ required: true }]}>
           <Input placeholder="Masukkan Nama" />
@@ -43,11 +56,11 @@ const Modal: React.FC<ModalProps> = ({
           label="No Hp"
           rules={[{ required: true }]}
         >
-          <Input placeholder="Masukkan No Hp" />
+          <Input maxLength={13} placeholder="Masukkan No Hp" />
         </Form.Item>
         <Form.Item<FormData>>
           <Button type="primary" htmlType="submit">
-            Tambah
+            {type === "add" ? "Tambah" : "Edit"}
           </Button>
         </Form.Item>
       </Form>
